@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createTrial, getTrials } from "./trialService";
+import { createTrial, getTrialById, getTrials } from "./trialService";
 import {
   sendErrorResponse,
   sendSuccessResponse,
@@ -51,5 +51,20 @@ export const createTrialController = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Error in createTrial:", error);
     sendErrorResponse(500, res, error, TRIAL_MESSAGES.CREATE_ERROR);
+  }
+};
+
+export const getTrialByIdController = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const trial = await getTrialById(id);
+    if (!trial) {
+      sendErrorResponse(404, res, null, TRIAL_MESSAGES.NOTFOUND);
+    }
+    sendSuccessResponse(200, res, trial, TRIAL_MESSAGES.FETCHED);
+  } catch (error) {
+    console.error("Error fetching trial by ID:", error);
+    sendErrorResponse(500, res, error, TRIAL_MESSAGES.FETCH_ERROR);
   }
 };

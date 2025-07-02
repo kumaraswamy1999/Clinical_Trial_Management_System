@@ -41,3 +41,7 @@ export const getTrials = async ({
 
   return { trials, total };
 };
+
+export const getTrialById = async (id: string) => {
+  return await TrialModel.findOne({ _id: id });
+};

@@ -3,4 +3,5 @@ export const TRIAL_MESSAGES = {
   CREATE_ERROR: "Failed to create trial. Please try again later",
   FETCHED: "Fetched trials successfully",
   FETCH_ERROR: "Error fetching trials",
+  NOTFOUND: "Trial not found",
 };
