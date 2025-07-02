@@ -1,18 +1,46 @@
 import { Request, Response } from "express";
-import { createTrial } from "./trialService";
+import { createTrial, getTrials } from "./trialService";
 import {
   sendErrorResponse,
   sendSuccessResponse,
 } from "../../utils/responseUtil";
 import { TRIAL_MESSAGES } from "./trialMessage";
+import { getPaginationOptions } from "../../utils/pagination";
 
 export const getAllTrailsController = async (req: Request, res: Response) => {
   try {
-    console.log("GET all trail called");
-    res.json({ message: "Fetched all trail (demo)" });
+    const { researcherId } = req.query;
+    const pagination = getPaginationOptions(req.query);
+
+    const filter: any = {};
+    if (researcherId) {
+      filter.researcherId = researcherId;
+    }
+
+    const { trials, total } = await getTrials({
+      filter,
+      sort: pagination.sort,
+      skip: pagination.skip,
+      limit: pagination.limit,
+    });
+
+    sendSuccessResponse(
+      200,
+      res,
+      {
+        data: trials,
+        pagination: {
+          total,
+          page: Number(req.query.page || 1),
+          limit: pagination.limit,
+          totalPages: Math.ceil(total / pagination.limit),
+        },
+      },
+      TRIAL_MESSAGES.FETCHED
+    );
   } catch (error) {
-    console.error("Error in getAllUsers:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error("Error in getTrails:", error);
+    sendErrorResponse(500, res, error, TRIAL_MESSAGES.FETCH_ERROR);
   }
 };
 

@@ -10,14 +10,34 @@ interface CreateTrialInput {
 }
 
 export const createTrial = async (data: CreateTrialInput): Promise<ITrial> => {
-    console.log(data);
-    
   const newTrial = new TrialModel({
     trialName: data.trialName,
     researcherId: data.researcherId,
     description: data.description,
     period: data.period,
   });
-
   return await newTrial.save();
+};
+
+interface QueryOptions {
+  filter?: Record<string, any>;
+  sort?: Record<string, 1 | -1>;
+  skip?: number;
+  limit?: number;
+}
+
+export const getTrials = async ({
+  filter = {},
+  sort = { createdAt: -1 },
+  skip = 0,
+  limit = 10,
+}: QueryOptions) => {
+  const trials = await TrialModel.find(filter)
+    .sort(sort)
+    .skip(skip)
+    .limit(limit);
+
+  const total = await TrialModel.countDocuments(filter);
+
+  return { trials, total };
 };
