@@ -1,5 +1,10 @@
 import { Request, Response } from "express";
-import { createTrial, getTrialById, getTrials } from "./trialService";
+import {
+  createTrial,
+  getTrialById,
+  getTrials,
+  updateTrialById,
+} from "./trialService";
 import {
   sendErrorResponse,
   sendSuccessResponse,
@@ -66,5 +71,25 @@ export const getTrialByIdController = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Error fetching trial by ID:", error);
     sendErrorResponse(500, res, error, TRIAL_MESSAGES.FETCH_ERROR);
+  }
+};
+
+export const updateTrialByIdController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const { id } = req.params;
+    const updateData = req.body;
+
+    const updatedTrial = await updateTrialById(id, updateData);
+
+    if (!updatedTrial) {
+      sendErrorResponse(404, res, null, TRIAL_MESSAGES.NOTFOUND);
+    }
+    sendSuccessResponse(200, res, updatedTrial, TRIAL_MESSAGES.UPDATED);
+  } catch (error) {
+    console.error("Error updating trial:", error);
+    sendErrorResponse(500, res, error, TRIAL_MESSAGES.UPDATE_ERROR);
   }
 };

@@ -45,3 +45,13 @@ export const getTrials = async ({
 export const getTrialById = async (id: string) => {
   return await TrialModel.findOne({ _id: id });
 };
+
+export const updateTrialById = async (
+  id: string,
+  updateData: Record<string, any>
+) => {
+  return await TrialModel.findOneAndUpdate({ _id: id }, updateData, {
+    new: true, // return the updated document
+    runValidators: true, // ensure schema validation
+  });
+};

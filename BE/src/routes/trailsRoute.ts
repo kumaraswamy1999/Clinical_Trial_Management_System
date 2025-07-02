@@ -3,6 +3,7 @@ import {
   createTrialController,
   getAllTrailsController,
   getTrialByIdController,
+  updateTrialByIdController,
 } from "../modules/trials/trailController";
 
 const router = Router();
@@ -13,5 +14,7 @@ router.get("/", getAllTrailsController);
 router.post("/", createTrialController);
 // GET:id /trials/
 router.get("/:id", getTrialByIdController);
+// PATCH /trials/
+router.patch("/:id", updateTrialByIdController);
 
 export default router;
