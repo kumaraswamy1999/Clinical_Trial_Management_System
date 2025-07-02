@@ -4,7 +4,7 @@ export const sendErrorResponse = (
   statusCode: number,
   res: Response,
   error: any,
-  errorMessage: string
+  errorMessage: any
 ): void => {
   const message = errorMessage || error?.message;
   res.status(statusCode).json({ success: false, error: message });
