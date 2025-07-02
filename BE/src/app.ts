@@ -1,11 +1,11 @@
 import express, { Application } from "express";
 import cors from "cors";
 import morgan from "morgan";
-import { env } from "./config/env";
 import routes from "./routes";
 import helmet from "helmet";
 import { limiterConfig } from "./config/rateLimitConfig";
-import connectDB from "./config/db";
+import { env } from "./config/envConfig";
+import connectDB from "./config/dbConfig";
 // import { throttleConfig } from "./config/throttleConfig.cjs";
 
 const app: Application = express();

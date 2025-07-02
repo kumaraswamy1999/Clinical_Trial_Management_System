@@ -1,5 +1,5 @@
 import app from "./app";
-import { env } from "./config/env";
+import { env } from "./config/envConfig";
 
 // Load environment variables from .env file
 const PORT = env.PORT || 5000;
