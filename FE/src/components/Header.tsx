@@ -2,6 +2,7 @@ import React, { lazy } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { getLoggedInUser, logout } from "../utils/utils";
+import Sidebar from "./Sidebar";
 
 const AdminSidebar = lazy(() => import('./AdminSidebar'))
 const UserSidebar = lazy(() => import('./UserSidebar'))
@@ -22,8 +23,8 @@ export const Header: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
     return (
         <div className="flex h-screen">
-            {role == "admin" ? <AdminSidebar /> : <UserSidebar />}
-
+            {/* {role == "admin" ? <AdminSidebar /> : <UserSidebar />} */}
+            <Sidebar/>
             <div className="flex flex-col flex-1">
                 <nav className="bg-gray-900 p-4 flex items-center justify-between">
                     <div className="w-1/4" />
