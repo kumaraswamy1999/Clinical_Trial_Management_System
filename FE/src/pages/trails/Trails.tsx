@@ -6,6 +6,7 @@ import { Button } from "../../components/reusable/Button";
 import Loader from "../../components/reusable/Loader";
 import { Modal } from "../../components/reusable/Modal";
 import TrialForm from "../../components/Trials/TrialForm";
+import Enrollment from "../../components/Enrollments/Enrollment";
 
 export interface UserQueryParams {
   page?: number;
@@ -33,6 +34,7 @@ const Trails: React.FC = () => {
 
   const [filterOption, setFilterOption] = useState(queryParams);
   const [addTrailModal, setAddTrialModal] = useState(false);
+  const [isModalOpen,setIsModelOpen] = useState(false);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["trails", filterOption],
@@ -100,9 +102,10 @@ const Trails: React.FC = () => {
               <td className="px-4 py-2">{trail.period}</td>
               <td className="px-4 py-2">
                 <div className="flex items-center space-x-2">
-                   <button className="text-xs bg-red-500 text-white px-2 py-1 rounded hover:bg-green-600 transition">
+                   <button  onClick={() => setIsModelOpen(true)} className="text-xs bg-red-500 text-white px-2 py-1 rounded hover:bg-green-600 transition">
                     Entroll
                   </button>
+    
                   <button className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition">
                     Edit
                   </button>
@@ -122,6 +125,7 @@ const Trails: React.FC = () => {
       <Modal isOpen={addTrailModal} onClose={handleClick} title="Add Trial">
         <TrialForm onSuccess={() => handleClick()} />
       </Modal>
+      <Modal isOpen={isModalOpen} title="Enrollment" onClose={()=>setIsModelOpen(false)}>{<Enrollment/>}</Modal>
     </>
   );
 };
