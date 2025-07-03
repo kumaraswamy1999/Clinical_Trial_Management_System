@@ -16,17 +16,13 @@ export interface UserQueryParams {
   order?: "asc" | "desc";
 }
 
-const tableCoulmns = [
-  { label: "Trial Name", key: "trialName" },
-  { label: "Description", key: "description" },
-  { label: "Period", key: "period" },
-];
-
 const Trails: React.FC = () => {
+      const researcherId = JSON.parse(localStorage.getItem("user")).id;
+
   const queryParams: UserQueryParams = {
-    // researcherId: "64a1f2c9e4b8a2d1c3f9a133",
-    page: 1,
-    limit: 2,
+    researcherId ,
+    // page: 1,
+    // limit: 2,
     // search: "john",
     // sortBy: "name",
     // order: "asc",
@@ -37,7 +33,7 @@ const Trails: React.FC = () => {
   const [isModalOpen,setIsModelOpen] = useState(false);
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["trails", filterOption],
+    queryKey: ["trails", filterOption, addTrailModal],
     queryFn: () => getAllTrails(filterOption),
   });
 
@@ -67,22 +63,7 @@ const Trails: React.FC = () => {
                   <h1 className="text-2xl font-semibold">{}</h1>
                   <Button label="Add Trail" onClick={handleClick} />
                {" "}
-        </div>
-        {/* <Button label="Add Trail" onClick={handleClick} /> */}
-        {/* <Table
-          data={trailData}
-          columns={tableCoulmns}
-          page={page}
-          totalPages={totalPages}
-          // sortKey={"title"}
-          onPageChange={(e) => {
-            setFilterOption((prev) => ({
-              ...prev,
-              page: e,
-            }));
-          }}
-        /> */}
-    
+        </div>    
 
     <div className="overflow-x-auto rounded-lg shadow-md border border-gray-200 bg-white p-4">
       <table className="min-w-full text-sm text-gray-700">
@@ -102,11 +83,11 @@ const Trails: React.FC = () => {
               <td className="px-4 py-2">{trail.period}</td>
               <td className="px-4 py-2">
                 <div className="flex items-center space-x-2">
-                   <button  onClick={() => setIsModelOpen(true)} className="text-xs bg-red-500 text-white px-2 py-1 rounded hover:bg-green-600 transition">
+                   <button  onClick={() => setIsModelOpen(true)} className="text-xs bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 transition">
                     Entroll
                   </button>
     
-                  <button className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition">
+                  <button onClick={()=>{handleClick()}} className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition">
                     Edit
                   </button>
                   <button className="text-xs bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition">

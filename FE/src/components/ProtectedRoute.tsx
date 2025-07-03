@@ -2,7 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 
 const ProtectedRoute = ({ allowedRoles }: { allowedRoles: string[] }) => {
   // const user = JSON.parse(localStorage.getItem("user") || "null");
-  const user = { name: "test", token: "dasdas", id: 1212, role: "researcher" };
+  const user = { name: "test", token: "dasdas", id: "68661fa8ae03b944dea9e3ab", role: "researcher" };
 
   if (!user || !user.token) {
     return <Navigate to="/login" replace />;

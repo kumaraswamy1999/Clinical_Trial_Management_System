@@ -14,27 +14,25 @@ const AdminDashboard = lazy(() => import("../pages/admin/AdminDashboard"));
 const AdminHomePage = lazy(() => import("../pages/admin/AdminHomePage"));
 
 const routes = [
-  { path: "/", element: <Register /> },
+  { path: "/register", element: <Register /> },
   { path: "/login", element: <Login /> },
 
+  // {
+  //   // give role
+  //   element: <ProtectedRoute allowedRoles={["patient"]} />,
+  //   children: [],
+  // },
   {
     // give role
-    element: <ProtectedRoute allowedRoles={["patient"]} />,
-    children: [
-      
-    ],
-  },
-  {
-    // give role
-    element: <ProtectedRoute allowedRoles={["researcher"]} />,
+    element: <ProtectedRoute allowedRoles={["researcher", "patient"]} />,
     children: [
       {
-        path: "/researcher-dashboard",
+        path: "/",
         element: <AdminDashboard />,
         children: [
           { index: true, element: <AdminHomePage /> },
           { path: "trails", element: <Trails /> },
-        {path:'enrollments',element:<PatientEnrollment/>}
+          { path: "enrollments", element: <PatientEnrollment /> },
         ],
       },
     ],

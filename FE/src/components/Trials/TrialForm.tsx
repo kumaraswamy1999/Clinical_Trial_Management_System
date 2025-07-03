@@ -1,9 +1,9 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import { axiosInstance } from "../../api/axiosInstance";
 
 type TrialFormData = {
-  trialname: string;
+  trialName: string;
   description: string;
   period: number;
 };
@@ -21,8 +21,11 @@ const TrialForm: React.FC<TrialFormProps> = ({ onSuccess }) => {
   } = useForm<TrialFormData>();
 
   const onSubmit = async (data: TrialFormData) => {
+    const researcherId = JSON.parse(localStorage.getItem("user")).id;
+    console.log(researcherId);
+
     try {
-      await axios.post("/api/trials", data); // Replace with your actual API endpoint
+      await axiosInstance.post("/trails", { ...data, researcherId }); // Replace with your actual API endpoint
       reset();
       onSuccess();
     } catch (error) {
@@ -35,11 +38,11 @@ const TrialForm: React.FC<TrialFormProps> = ({ onSuccess }) => {
       <div>
         <label className="block mb-1 font-medium">Trial Name</label>
         <input
-          {...register("trialname", { required: "Trial name is required" })}
+          {...register("trialName", { required: "Trial name is required" })}
           className="w-full border border-gray-300 rounded px-2 py-1"
         />
-        {errors.trialname && (
-          <p className="text-red-500 text-xs">{errors.trialname.message}</p>
+        {errors.trialName && (
+          <p className="text-red-500 text-xs">{errors.trialName.message}</p>
         )}
       </div>
 

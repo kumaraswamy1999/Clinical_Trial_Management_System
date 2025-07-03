@@ -52,7 +52,7 @@ export default function Enrollment() {
       );
 
       if(response.status === 201){
-        navigate('enrollments')
+        navigate('/enrollments')
       }
       
     },
