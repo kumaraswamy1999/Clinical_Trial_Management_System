@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 const validationSchema = Yup.object().shape({
   patientId: Yup.string().required("Patient Id is required"),
@@ -22,6 +23,7 @@ interface formValues {
   status: string;
 }
 export default function Enrollment() {
+  const navigate = useNavigate();
   const formik = useFormik<formValues>({
     initialValues: {
       patientId: "",
@@ -48,7 +50,11 @@ export default function Enrollment() {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      console.log(response);
+
+      if(response.status === 201){
+        navigate('/enrollments')
+      }
+      
     },
   });
   return (

@@ -8,10 +8,25 @@ const AdminSidebar: React.FC = () => {
     setIsOpen(!isOpen);
   };
 
+  
+export interface SidebarItem {
+  name: string;
+  path: string;
+  icon?: React.ReactNode; // Optional icon
+  children?: SidebarItem[]; // Optional for nested items
+}
+
+
+  const sidebarItems:  = [
+    { name: "Dashboard", path: "/" },
+    { name: "Trials", path: "/trials" },
+  ];
+
   return (
     <div
-      className={`bg-gray-900 text-white transition-all duration-300 flex flex-col ${isOpen ? "w-64" : "w-20"
-        }`}
+      className={`bg-gray-900 text-white transition-all duration-300 flex flex-col ${
+        isOpen ? "w-64" : "w-20"
+      }`}
     >
       <button onClick={toggleSidebar} className="p-4 bg-gray-900">
         {isOpen ? (
@@ -51,11 +66,15 @@ const AdminSidebar: React.FC = () => {
       <div
         className={`flex flex-col ${isOpen ? "block" : "hidden"} md:block p-6`}
       >
-        <NavLink to="/admin-dashboard" className="mb-2 text-center hover:bg-blue-500 bg-gray-800 px-4 py-2 mb-6 rounded">Home</NavLink>
+        <NavLink
+          to="/"
+          className="mb-2 text-center hover:bg-blue-500 bg-gray-800 px-4 py-2 mb-6 rounded"
+        >
+          Home
+        </NavLink>
       </div>
     </div>
   );
 };
-
 
 export default AdminSidebar;
