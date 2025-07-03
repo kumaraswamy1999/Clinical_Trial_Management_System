@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createEnrollments, getAllEnrollments, getEnrollmentById, updateEnrollmentById } from "../modules/enrollments/enrollmentController";
+import { createEnrollments, getAllEnrollments, getEnrollmentByPatientId,getEnrollmentByTrialId, updateEnrollmentById } from "../modules/enrollments/enrollmentController";
 import multer from "multer";
 
 const enrollmentRouter = Router();
@@ -13,9 +13,11 @@ export const upload = multer({storage});
 
 enrollmentRouter.post('/createEnrollment',upload.single('doc'),createEnrollments);
 
-enrollmentRouter.patch('/updateEnrollment/:id',updateEnrollmentById);
+enrollmentRouter.patch('/updateEnrollment/:enrollmentId',updateEnrollmentById);
 
-enrollmentRouter.get('/getEnrollment/:id',getEnrollmentById);
+enrollmentRouter.get('/getPatientEnrollment/:patientId',getEnrollmentByPatientId);
+
+enrollmentRouter.get('/getTrialEnrollment/:trialId',getEnrollmentByTrialId);
 
 enrollmentRouter.get('/getAllEnrollments',getAllEnrollments);
 
