@@ -8,16 +8,14 @@ const AdminSidebar: React.FC = () => {
     setIsOpen(!isOpen);
   };
 
-  
-export interface SidebarItem {
-  name: string;
-  path: string;
-  icon?: React.ReactNode; // Optional icon
-  children?: SidebarItem[]; // Optional for nested items
-}
+  export interface SidebarItem {
+    name: string;
+    path: string;
+    icon?: React.ReactNode; // Optional icon
+    children?: SidebarItem[]; // Optional for nested items
+  }
 
-
-  const sidebarItems:  = [
+  const sidebarItems = [
     { name: "Dashboard", path: "/" },
     { name: "Trials", path: "/trials" },
   ];

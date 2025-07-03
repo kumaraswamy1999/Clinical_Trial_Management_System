@@ -1,12 +1,25 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router";
 
-const UserSidebar: React.FC = () => {
+const Sidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(true);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
+
+  interface SidebarItem {
+    name: string;
+    path: string;
+    icon?: React.ReactNode; // Optional icon
+    children?: SidebarItem[]; // Optional for nested items
+  }
+
+  const sidebarItems: SidebarItem[] = [
+    { name: "Dashboard", path: "/dashboard" },
+    { name: "Trials", path: "/dashboard/trails" },
+    { name: "Enrollment", path: "/dashboard/enrollments" },
+  ];
 
   return (
     <div
@@ -36,15 +49,18 @@ const UserSidebar: React.FC = () => {
       <div
         className={`flex flex-col ${isOpen ? "block" : "hidden"} md:block p-6`}
       >
-        <NavLink
-          to="/dashboard"
-          className="mb-2 text-center hover:bg-blue-500 bg-gray-800 px-4 py-2 mb-6 rounded"
-        >
-          Home
-        </NavLink>
+        {sidebarItems.map(({ name, path }: SidebarItem, index) => (
+          <NavLink
+            key={index}
+            to={path}
+            className="mb-2 text-center hover:bg-blue-500 bg-gray-800 px-4 py-2 mb-6 rounded"
+          >
+            {name}
+          </NavLink>
+        ))}
       </div>
     </div>
   );
 };
 
-export default UserSidebar;
+export default Sidebar;

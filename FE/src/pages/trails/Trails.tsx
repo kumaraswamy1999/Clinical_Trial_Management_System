@@ -6,6 +6,7 @@ import Loader from "../../components/reusable/Loader";
 import { Modal } from "../../components/reusable/Modal";
 import TrialForm from "../../components/Trials/TrialForm";
 import Enrollment from "../../components/Enrollments/Enrollment";
+import { Pagination } from "../../components/reusable/Pagination";
 
 export interface UserQueryParams {
   page?: number;
@@ -20,8 +21,8 @@ const Trails: React.FC = () => {
 
   const queryParams: UserQueryParams = {
     researcherId,
-    // page: 1,
-    // limit: 2,
+    page: 1,
+    limit: 5,
     // search: "john",
     // sortBy: "name",
     // order: "asc",
@@ -30,7 +31,7 @@ const Trails: React.FC = () => {
   const [filterOption, setFilterOption] = useState(queryParams);
   const [addTrailModal, setAddTrialModal] = useState(false);
   const [isModalOpen, setIsModelOpen] = useState(false);
-  const [trailDetails, setTrailDetails] = useState();
+  const [trailDetails, setTrailDetails] = useState(null);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["trails", filterOption, addTrailModal],
@@ -39,11 +40,13 @@ const Trails: React.FC = () => {
 
   const { response } = data || {};
   const { data: trailData, pagination } = response || {};
-  const { page, totalPages } = pagination || {};
+  const { page, totalPages, limit } = pagination || {};
 
   const handleClick = () => {
     setAddTrialModal((prev) => !prev);
   };
+
+  const serialNumber = (index) => (page - 1) * limit + index + 1;
 
   if (isLoading)
     return (
@@ -62,7 +65,7 @@ const Trails: React.FC = () => {
           <Button
             label="Add Trail"
             onClick={() => {
-              setTrailDetails({ researcherId });
+              setTrailDetails(null);
               handleClick();
             }}
           />
@@ -71,6 +74,7 @@ const Trails: React.FC = () => {
           <table className="min-w-full text-sm text-gray-700">
             <thead>
               <tr className="bg-gray-50 text-left text-gray-600">
+                <th className="px-4 py-2 font-medium">SlNo.</th>
                 <th className="px-4 py-2 font-medium">Trail Name</th>
                 <th className="px-4 py-2 font-medium">Description</th>
                 <th className="px-4 py-2 font-medium">Period</th>
@@ -83,6 +87,7 @@ const Trails: React.FC = () => {
                   key={index}
                   className="border-t hover:bg-gray-50 transition"
                 >
+                  <td className="px-4 py-2">{serialNumber(index)}</td>
                   <td className="px-4 py-2">{trail.trialName}</td>
                   <td className="px-4 py-2">{trail.description}</td>
                   <td className="px-4 py-2">{trail.period}</td>
@@ -112,9 +117,20 @@ const Trails: React.FC = () => {
               ))}
             </tbody>
           </table>
+          <Pagination
+            currentPage={page}
+            totalPages={totalPages}
+            onPageChange={(e) => {
+              setFilterOption((prev) => ({ ...prev, page: e }));
+            }}
+          />
         </div>
       </div>
-      <Modal isOpen={addTrailModal} onClose={handleClick} title="Add Trial">
+      <Modal
+        isOpen={addTrailModal}
+        onClose={handleClick}
+        title={trailDetails ? "Edit Trial" : "Add Trial"}
+      >
         <TrialForm onSuccess={() => handleClick()} initialData={trailDetails} />
       </Modal>
       <Modal
