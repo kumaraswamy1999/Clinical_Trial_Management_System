@@ -2,7 +2,7 @@
 import mongoose from 'mongoose';
 
 const patientSchema = new mongoose.Schema({
-  patientName: {
+  name: {
     type: String,
     required: true,
   },
@@ -11,7 +11,7 @@ const patientSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  dateOfBirth: {
+  dob: {
     type: Date,
     required: true,
   },
@@ -22,7 +22,7 @@ const patientSchema = new mongoose.Schema({
   gender: {
     type: String,
     required: true,
-    enum: ['Male', 'Female', 'Other'],
+    enum: ['male', 'female'],
   },
 }, {
   timestamps: true,

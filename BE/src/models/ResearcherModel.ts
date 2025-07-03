@@ -11,7 +11,7 @@ const researcherSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  dateOfBirth: {
+  dob: {
     type: Date,
     required: true,
   },
@@ -22,7 +22,7 @@ const researcherSchema = new mongoose.Schema({
   gender: {
     type: String,
     required: true,
-    enum: ['Male', 'Female', 'Other'],
+    enum: ['male', 'female'],
   },
 }, {
   timestamps: true,
