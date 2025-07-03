@@ -5,6 +5,10 @@ import Patient from "../../models/PatientModel";
 import Researcher from "../../models/ResearcherModel";
 
 import bcrypt from 'bcrypt';
+import { StatusCodes } from "http-status-codes";
+import jwt from "jsonwebtoken";
+import { env } from "../../config/envConfig";
+
 
 
 
@@ -45,7 +49,11 @@ export const registerUser = async(req:Request,res:Response)=>{
 
     // Save user to DB
     await user.save();
-    sendSuccessResponse(201,res,user,`successfully registered`)
+    
+    const userObj = user.toObject();
+    delete userObj.password;
+
+    sendSuccessResponse(201,res,userObj,`successfully registered`)
   } 
 
 
@@ -53,4 +61,39 @@ export const registerUser = async(req:Request,res:Response)=>{
   catch (error) {
     sendErrorResponse(500,res,"registration failed",error)
   }
+}
+
+export const loginUser = async(req:Request,res:Response)=>{
+  if(!Object.keys(req.body).length){
+      sendErrorResponse(StatusCodes.BAD_REQUEST, res, {}, "Email and role are required");
+  }
+  const {email,password,role}= req.body
+  try {
+    let verifyUser:any;
+    if (role === 'patient') {
+      verifyUser = await Patient.findOne({ email}).select('-__v -createdAt -updatedAt').lean();
+      if(verifyUser){
+        const verifyPassword = await bcrypt.compare(password,verifyUser.password)
+        if (!verifyPassword) sendErrorResponse(StatusCodes.UNAUTHORIZED, res, {}, "Invalid credentails")
+        
+        const userPayload = {email,role}
+        const generatedToken = jwt.sign(userPayload,env.JWT_ACCESS, { expiresIn:'1h' });
+
+        const usercopy = {...verifyUser}
+        delete usercopy.password
+       
+        const responseData = {...usercopy,token:generatedToken}
+        sendSuccessResponse(StatusCodes.OK,res,responseData,`${role} logged in successfully`)
+
+      }
+    } else if (role === 'researcher') {
+      verifyUser = await Researcher.findOne({ email});
+    } else {
+      sendErrorResponse(400,res,"Invalid credentials","")
+    }
+  } catch (error) {
+    sendErrorResponse(500,res,"something went wrong",error)
+  }
+
+
 }
