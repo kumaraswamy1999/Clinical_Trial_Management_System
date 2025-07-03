@@ -13,6 +13,7 @@ export interface UserQueryParams {
   limit?: number;
   researcherId?: string;
   sortBy?: string;
+  search?: string;
   order?: "asc" | "desc";
 }
 
@@ -23,7 +24,6 @@ const Trails: React.FC = () => {
     researcherId,
     page: 1,
     limit: 5,
-    // search: "john",
     // sortBy: "name",
     // order: "asc",
   };
@@ -32,7 +32,7 @@ const Trails: React.FC = () => {
   const [addTrailModal, setAddTrialModal] = useState(false);
   const [isModalOpen, setIsModelOpen] = useState(false);
   const [trailDetails, setTrailDetails] = useState(null);
-
+  // const [search, setSearch] = useState("");
   const { data, isLoading, error } = useQuery({
     queryKey: ["trails", filterOption, addTrailModal],
     queryFn: () => getAllTrails(filterOption),
@@ -63,7 +63,11 @@ const Trails: React.FC = () => {
           <input
             type="text"
             placeholder="Search Trail Name..."
-            // onChange={(e) => onSearchChange(e.target.value)}
+            onChange={(e) => {
+              // setSearch(e.target.value);
+              console.log(e.target.value);
+              // setFilterOption((prev) => ({ ...prev, search: e.target.value }));
+            }}
             className="w-50 px-3 py-2 border rounded-md text-sm"
           />
           <Button
@@ -112,9 +116,9 @@ const Trails: React.FC = () => {
                       >
                         Edit
                       </button>{" "}
-                      <button className="text-xs bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition">
+                      {/* <button className="text-xs bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition">
                         Delete
-                      </button>
+                      </button> */}
                     </div>
                   </td>
                 </tr>
