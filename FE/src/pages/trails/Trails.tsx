@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Table } from "../../components/reusable/Table";
 import { useQuery } from "@tanstack/react-query";
 import { getAllTrails } from "../../api/trails";
 import { Button } from "../../components/reusable/Button";
@@ -17,10 +16,10 @@ export interface UserQueryParams {
 }
 
 const Trails: React.FC = () => {
-      const researcherId = JSON.parse(localStorage.getItem("user")).id;
+  const researcherId = JSON.parse(localStorage.getItem("user"))._id;
 
   const queryParams: UserQueryParams = {
-    researcherId ,
+    researcherId,
     // page: 1,
     // limit: 2,
     // search: "john",
@@ -30,7 +29,8 @@ const Trails: React.FC = () => {
 
   const [filterOption, setFilterOption] = useState(queryParams);
   const [addTrailModal, setAddTrialModal] = useState(false);
-  const [isModalOpen,setIsModelOpen] = useState(false);
+  const [isModalOpen, setIsModelOpen] = useState(false);
+  const [trailDetails, setTrailDetails] = useState();
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["trails", filterOption, addTrailModal],
@@ -55,58 +55,75 @@ const Trails: React.FC = () => {
 
   return (
     <>
-         {" "}
       <div className="min-h-screen bg-gray-50 p-6">
-              {/* Header with Button on the Right */}
-             {" "}
         <div className="flex justify-between items-center mb-6">
-                  <h1 className="text-2xl font-semibold">{}</h1>
-                  <Button label="Add Trail" onClick={handleClick} />
-               {" "}
-        </div>    
+          <h1 className="text-2xl font-semibold">{}</h1>
 
-    <div className="overflow-x-auto rounded-lg shadow-md border border-gray-200 bg-white p-4">
-      <table className="min-w-full text-sm text-gray-700">
-        <thead>
-          <tr className="bg-gray-50 text-left text-gray-600">
-            <th className="px-4 py-2 font-medium">Trail Name</th>
-            <th className="px-4 py-2 font-medium">Description</th>
-            <th className="px-4 py-2 font-medium">Period</th>
-            <th className="px-4 py-2 font-medium">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {trailData.map((trail, index) => (
-            <tr key={index} className="border-t hover:bg-gray-50 transition">
-              <td className="px-4 py-2">{trail.trialName}</td>
-              <td className="px-4 py-2">{trail.description}</td>
-              <td className="px-4 py-2">{trail.period}</td>
-              <td className="px-4 py-2">
-                <div className="flex items-center space-x-2">
-                   <button  onClick={() => setIsModelOpen(true)} className="text-xs bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 transition">
-                    Entroll
-                  </button>
-    
-                  <button onClick={()=>{handleClick()}} className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition">
-                    Edit
-                  </button>
-                  <button className="text-xs bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition">
-                    Delete
-                  </button>
-
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-
+          <Button
+            label="Add Trail"
+            onClick={() => {
+              setTrailDetails({ researcherId });
+              handleClick();
+            }}
+          />
+        </div>
+        <div className="overflow-x-auto rounded-lg shadow-md border border-gray-200 bg-white p-4">
+          <table className="min-w-full text-sm text-gray-700">
+            <thead>
+              <tr className="bg-gray-50 text-left text-gray-600">
+                <th className="px-4 py-2 font-medium">Trail Name</th>
+                <th className="px-4 py-2 font-medium">Description</th>
+                <th className="px-4 py-2 font-medium">Period</th>
+                <th className="px-4 py-2 font-medium">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {trailData.map((trail, index) => (
+                <tr
+                  key={index}
+                  className="border-t hover:bg-gray-50 transition"
+                >
+                  <td className="px-4 py-2">{trail.trialName}</td>
+                  <td className="px-4 py-2">{trail.description}</td>
+                  <td className="px-4 py-2">{trail.period}</td>
+                  <td className="px-4 py-2">
+                    <div className="flex items-center space-x-2">
+                      <button
+                        onClick={() => setIsModelOpen(true)}
+                        className="text-xs bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 transition"
+                      >
+                        Entroll{" "}
+                      </button>
+                      <button
+                        onClick={() => {
+                          setTrailDetails(trail);
+                          handleClick();
+                        }}
+                        className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition"
+                      >
+                        Edit
+                      </button>{" "}
+                      <button className="text-xs bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition">
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
       <Modal isOpen={addTrailModal} onClose={handleClick} title="Add Trial">
-        <TrialForm onSuccess={() => handleClick()} />
+        <TrialForm onSuccess={() => handleClick()} initialData={trailDetails} />
       </Modal>
-      <Modal isOpen={isModalOpen} title="Enrollment" onClose={()=>setIsModelOpen(false)}>{<Enrollment/>}</Modal>
+      <Modal
+        isOpen={isModalOpen}
+        title="Enrollment"
+        onClose={() => setIsModelOpen(false)}
+      >
+        {<Enrollment />}
+      </Modal>
     </>
   );
 };

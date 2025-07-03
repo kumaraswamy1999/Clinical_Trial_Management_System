@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { axiosInstance } from "../../api/axiosInstance";
 
@@ -10,22 +10,51 @@ type TrialFormData = {
 
 type TrialFormProps = {
   onSuccess: () => void;
+  initialData?: {
+    id: string;
+    trialName: string;
+    description: string;
+    period: number;
+  };
 };
 
-const TrialForm: React.FC<TrialFormProps> = ({ onSuccess }) => {
+const TrialForm: React.FC<TrialFormProps> = ({ onSuccess, initialData }) => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
+    setValue,
   } = useForm<TrialFormData>();
 
+  useEffect(() => {
+    if (initialData) {
+      setValue("trialName", initialData.trialName);
+      setValue("description", initialData.description);
+      setValue("period", initialData.period);
+    }
+  }, [initialData, setValue]);
+
   const onSubmit = async (data: TrialFormData) => {
-    const researcherId = JSON.parse(localStorage.getItem("user")).id;
-    console.log(researcherId);
+    const researcherId = JSON.parse(localStorage.getItem("user") || "{}")._id;
 
     try {
-      await axiosInstance.post("/trails", { ...data, researcherId }); // Replace with your actual API endpoint
+      if (initialData?._id) {
+        // Edit mode: update only trialName, description, and period
+        await axiosInstance.patch(`/trails/${initialData._id}`, {
+          trialName: data.trialName,
+          description: data.description,
+          period: data.period,
+          researcherId,
+        });
+      } else {
+        // Create mode
+        await axiosInstance.post("/trails", {
+          ...data,
+          researcherId,
+        });
+      }
+
       reset();
       onSuccess();
     } catch (error) {
@@ -78,7 +107,11 @@ const TrialForm: React.FC<TrialFormProps> = ({ onSuccess }) => {
           disabled={isSubmitting}
           className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition"
         >
-          {isSubmitting ? "Submitting..." : "Submit"}
+          {isSubmitting
+            ? "Submitting..."
+            : initialData
+            ? "Update Trial"
+            : "Create Trial"}
         </button>
       </div>
     </form>
