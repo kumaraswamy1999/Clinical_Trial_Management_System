@@ -67,7 +67,7 @@ export interface SidebarItem {
         className={`flex flex-col ${isOpen ? "block" : "hidden"} md:block p-6`}
       >
         <NavLink
-          to="/researcher-dashboard"
+          to="/"
           className="mb-2 text-center hover:bg-blue-500 bg-gray-800 px-4 py-2 mb-6 rounded"
         >
           Home
