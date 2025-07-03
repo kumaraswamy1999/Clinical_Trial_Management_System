@@ -14,12 +14,16 @@ import { getPaginationOptions } from "../../utils/pagination";
 
 export const getAllTrailsController = async (req: Request, res: Response) => {
   try {
-    const { researcherId } = req.query;
+    const { researcherId, search } = req.query;
     const pagination = getPaginationOptions(req.query);
 
     const filter: any = {};
     if (researcherId) {
       filter.researcherId = researcherId;
+    }
+
+    if (search) {
+      filter.trialName = { $regex: search, $options: "i" };
     }
 
     const { trials, total } = await getTrials({
