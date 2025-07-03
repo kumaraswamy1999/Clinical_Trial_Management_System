@@ -5,6 +5,7 @@ import { Header } from "../components/Header";
 import Trails from "../pages/trails/Trails";
 import path from "path";
 import PatientEnrollment from "../components/Enrollments/patientsEnrollments";
+import Notifications from "../pages/Notification";
 
 const Register = lazy(() => import("../pages/auth/Register"));
 const Login = lazy(() => import("../pages/auth/Login"));
@@ -12,10 +13,15 @@ const UserDashboard = lazy(() => import("../pages/user/UserDashboard"));
 const UserHomePage = lazy(() => import("../pages/user/UserHomePage"));
 const AdminDashboard = lazy(() => import("../pages/admin/AdminDashboard"));
 const AdminHomePage = lazy(() => import("../pages/admin/AdminHomePage"));
+const EntryScreen = lazy(()=> import("../pages/EntryScreen/EntryScreen"));
+const PatientLogin= lazy(()=>import("../pages/Patient/LoginPatient"));
+const PatientRegister= lazy(()=>import("../pages/Patient/RegisterPatient"));
 
 const routes = [
-  { path: "/register", element: <Register /> },
-  { path: "/login", element: <Login /> },
+  {path:"/",element:<EntryScreen/>},
+  {path:"/notification",element:<Notifications/>},
+    {path:"/login/patient",element:<PatientLogin/>},
+    {path:"/register/patient",element:<PatientRegister/>},
 
   // {
   //   // give role
@@ -27,7 +33,7 @@ const routes = [
     element: <ProtectedRoute allowedRoles={["researcher", "patient"]} />,
     children: [
       {
-        path: "/",
+        path: "/dashboard",
         element: <AdminDashboard />,
         children: [
           { index: true, element: <AdminHomePage /> },
