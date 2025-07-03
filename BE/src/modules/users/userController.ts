@@ -71,7 +71,7 @@ export const loginUser = async(req:Request,res:Response)=>{
   try {
     let verifyUser:any;
     if (role === 'patient') {
-      verifyUser = await Patient.findOne({ email}).select('-__v -createdAt -updatedAt').lean();
+      verifyUser = await Patient.findOne({email}).select('-__v -createdAt -updatedAt').lean();
       if(verifyUser){
         const verifyPassword = await bcrypt.compare(password,verifyUser.password)
         if (!verifyPassword) sendErrorResponse(StatusCodes.UNAUTHORIZED, res, {}, "Invalid credentails")
@@ -89,7 +89,7 @@ export const loginUser = async(req:Request,res:Response)=>{
     } else if (role === 'researcher') {
       verifyUser = await Researcher.findOne({ email});
     } else {
-      sendErrorResponse(400,res,"Invalid credentials","")
+      sendErrorResponse(400,res,"Invalid credentials","Invalid credentials")
     }
   } catch (error) {
     sendErrorResponse(500,res,"something went wrong",error)

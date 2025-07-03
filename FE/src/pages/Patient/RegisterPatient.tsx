@@ -2,6 +2,8 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { submitUserForm } from '../../redux/actions/registerActions';
+import { toast } from "react-toastify";
 
 type FormData = {
   name: string;
@@ -21,10 +23,14 @@ const RegisterPatient: React.FC = () => {
   } = useForm<FormData>();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+ 
 
   const onSubmit = (data: FormData) => {
     console.log('Registering with:', data);
     // TODO: Add backend integration here
+    const inputdata = {...data,role:"patient"}
+    delete inputdata?.confirmPassword
+    dispatch(submitUserForm({formData:inputdata,navigate,toast}))
   };
 
   const password = watch('password');
