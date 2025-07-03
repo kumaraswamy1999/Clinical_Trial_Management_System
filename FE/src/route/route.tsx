@@ -1,6 +1,7 @@
 import { lazy } from "react";
 import { Navigate } from "react-router-dom";
 import ProtectedRoute from "../components/ProtectedRoute";
+import { Header } from "../components/Header";
 
 const Register = lazy(() => import('../pages/auth/Register'));
 const Login = lazy(() => import('../pages/auth/Login'));
@@ -12,18 +13,19 @@ const AdminHomePage = lazy(() => import('../pages/admin/AdminHomePage'));
 const routes = [
     { path: "/", element: <Register /> },
     { path: "/login", element: <Login /> },
+    {path:"/dashboard",element:<UserDashboard/>},
 
-    {
-        // give role
-        element: <ProtectedRoute allowedRoles={["staff"]} />,
-        children: [
-            {
-                path: "/dashboard",
-                element: <UserDashboard />,
-                children: [{ index: true, element: <UserHomePage /> }],
-            },
-        ],
-    },
+    // {
+    //     // give role
+    //     element: <ProtectedRoute allowedRoles={["staff"]} />,
+    //     children: [
+    //         {
+    //             path: "/dashboard",
+    //             element: <UserDashboard />,
+    //             children: [{ index: true, element: <UserHomePage /> }],
+    //         },
+    //     ],
+    // },
     {
         // give role
         element: <ProtectedRoute allowedRoles={["admin"]} />,
