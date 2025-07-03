@@ -23,7 +23,7 @@ export const submitLoginForm = createAsyncThunk(
       if(Object.keys(resultData).length){
         const {token,...rest}=resultData.response
         console.log("response",token,rest)
-        localStorage.setItem('user',JSON.stringify({...rest,role:"patient"}))
+        localStorage.setItem('user',JSON.stringify({...rest,role:formData?.role}))
         localStorage.setItem('token',JSON.stringify(token))
 
       }

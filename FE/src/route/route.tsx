@@ -8,7 +8,7 @@ import PatientEnrollment from "../components/Enrollments/patientsEnrollments";
 import Notifications from "../pages/Notification";
 
 const Register = lazy(() => import("../pages/auth/Register"));
-const Login = lazy(() => import("../pages/auth/Login"));
+const LoginResearcher = lazy(() => import("../pages/Researcher/LoginResearcher"));
 const UserDashboard = lazy(() => import("../pages/user/UserDashboard"));
 const UserHomePage = lazy(() => import("../pages/user/UserHomePage"));
 const AdminDashboard = lazy(() => import("../pages/admin/AdminDashboard"));
@@ -20,6 +20,7 @@ const PatientRegister= lazy(()=>import("../pages/Patient/RegisterPatient"));
 const routes = [
   {path:"/",element:<EntryScreen/>},
   {path:"/notification",element:<Notifications/>},
+  { path: "/login/researcher", element: <LoginResearcher /> },
     {path:"/login/patient",element:<PatientLogin/>},
     {path:"/register/patient",element:<PatientRegister/>},
 

@@ -86,8 +86,28 @@ export const loginUser = async(req:Request,res:Response)=>{
         sendSuccessResponse(StatusCodes.OK,res,responseData,`${role} logged in successfully`)
 
       }
+      else{
+        sendErrorResponse(400,res,"Invalid credentials","Invalid credentials")
+      }
     } else if (role === 'researcher') {
-      verifyUser = await Researcher.findOne({ email});
+      verifyUser = await Researcher.findOne({email}).select('-__v -createdAt -updatedAt').lean();
+      if(verifyUser){
+        const verifyPassword = await bcrypt.compare(password,verifyUser.password)
+        if (!verifyPassword) sendErrorResponse(StatusCodes.UNAUTHORIZED, res, {}, "Invalid credentails")
+        
+        const userPayload = {email,role}
+        const generatedToken = jwt.sign(userPayload,env.JWT_ACCESS, { expiresIn:'1h' });
+
+        const usercopy = {...verifyUser}
+        delete usercopy.password
+       
+        const responseData = {...usercopy,token:generatedToken}
+        sendSuccessResponse(StatusCodes.OK,res,responseData,`${role} logged in successfully`)
+
+      }
+      else{
+        sendErrorResponse(400,res,"Invalid credentials","Invalid credentials")
+      }
     } else {
       sendErrorResponse(400,res,"Invalid credentials","Invalid credentials")
     }
