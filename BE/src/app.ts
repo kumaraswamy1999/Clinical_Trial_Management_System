@@ -24,6 +24,9 @@ app.use(helmet());
 // Enable Cross-Origin Resource Sharing (CORS)
 app.use(cors());
 
+
+app.use('/uploads', express.static('uploads'));
+
 // Parse incoming JSON requests
 app.use(express.json());
 
