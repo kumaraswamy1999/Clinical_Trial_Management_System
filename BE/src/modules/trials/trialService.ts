@@ -43,7 +43,10 @@ export const getTrials = async ({
 };
 
 export const getTrialById = async (id: string) => {
-  return await TrialModel.findOne({ _id: id });
+  return await TrialModel.findOne({ _id: id }).populate(
+    "researcherId",
+    "_id name"
+  );
 };
 
 export const updateTrialById = async (
