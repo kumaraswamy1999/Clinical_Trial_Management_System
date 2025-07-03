@@ -59,9 +59,13 @@ const Trails: React.FC = () => {
   return (
     <>
       <div className="min-h-screen bg-gray-50 p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-semibold">{}</h1>
-
+        <div className="flex justify-between items-center mb-3">
+          <input
+            type="text"
+            placeholder="Search Trail Name..."
+            // onChange={(e) => onSearchChange(e.target.value)}
+            className="w-50 px-3 py-2 border rounded-md text-sm"
+          />
           <Button
             label="Add Trail"
             onClick={() => {
