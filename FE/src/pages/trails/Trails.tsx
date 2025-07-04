@@ -18,7 +18,9 @@ export interface UserQueryParams {
 }
 
 const Trails: React.FC = () => {
-  const researcherId = JSON.parse(localStorage.getItem("user"))._id;
+  const user = JSON.parse(localStorage.getItem("user"));
+  const researcherId = user._id;
+  const role = user.role;
 
   const queryParams: UserQueryParams = {
     researcherId,
@@ -70,13 +72,15 @@ const Trails: React.FC = () => {
             }}
             className="w-50 px-3 py-2 border rounded-md text-sm"
           />
-          <Button
-            label="Add Trail"
-            onClick={() => {
-              setTrailDetails(null);
-              handleClick();
-            }}
-          />
+          {role === "researcher" ? (
+            <Button
+              label="Add Trail"
+              onClick={() => {
+                setTrailDetails(null);
+                handleClick();
+              }}
+            />
+          ) : null}
         </div>
         <div className="overflow-x-auto rounded-lg shadow-md border border-gray-200 bg-white p-4">
           <table className="min-w-full text-sm text-gray-700">
@@ -101,21 +105,24 @@ const Trails: React.FC = () => {
                   <td className="px-4 py-2">{trail.period}</td>
                   <td className="px-4 py-2">
                     <div className="flex items-center space-x-2">
-                      <button
-                        onClick={() => setIsModelOpen(true)}
-                        className="text-xs bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 transition"
-                      >
-                        Entroll{" "}
-                      </button>
-                      <button
-                        onClick={() => {
-                          setTrailDetails(trail);
-                          handleClick();
-                        }}
-                        className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition"
-                      >
-                        Edit
-                      </button>{" "}
+                      {role === "researcher" ? (
+                        <button
+                          onClick={() => {
+                            setTrailDetails(trail);
+                            handleClick();
+                          }}
+                          className="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition"
+                        >
+                          Edit
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => setIsModelOpen(true)}
+                          className="text-xs bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 transition"
+                        >
+                          Entroll{" "}
+                        </button>
+                      )}
                       {/* <button className="text-xs bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition">
                         Delete
                       </button> */}
