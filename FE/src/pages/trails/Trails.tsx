@@ -19,8 +19,11 @@ export interface UserQueryParams {
 
 const Trails: React.FC = () => {
   const user = JSON.parse(localStorage.getItem("user"));
-  const researcherId = user._id;
+  let researcherId = "";
   const role = user.role;
+  if (role === "researcher") {
+    researcherId = user._id;
+  }
 
   const queryParams: UserQueryParams = {
     researcherId,
