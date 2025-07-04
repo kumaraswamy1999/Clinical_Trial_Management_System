@@ -79,7 +79,7 @@ export const loginUser = async(req:Request,res:Response)=>{
         const userPayload = {email,role}
         const generatedToken = jwt.sign(userPayload,env.JWT_ACCESS, { expiresIn:'1h' });
 
-        const usercopy = {...verifyUser}
+        const usercopy = {...verifyUser,role}
         delete usercopy.password
        
         const responseData = {...usercopy,token:generatedToken}
@@ -98,7 +98,7 @@ export const loginUser = async(req:Request,res:Response)=>{
         const userPayload = {email,role}
         const generatedToken = jwt.sign(userPayload,env.JWT_ACCESS, { expiresIn:'1h' });
 
-        const usercopy = {...verifyUser}
+        const usercopy = {...verifyUser,role}
         delete usercopy.password
        
         const responseData = {...usercopy,token:generatedToken}
