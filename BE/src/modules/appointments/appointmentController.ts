@@ -26,7 +26,7 @@ export const getAllAppointmentsController = async (
       filter.patientId = patientId;
     }
 
-    const { appts, total } = await getAppointments({
+    const { appointments, total } = await getAppointments({
       filter,
       sort: pagination.sort,
       skip: pagination.skip,
@@ -37,7 +37,7 @@ export const getAllAppointmentsController = async (
       200,
       res,
       {
-        data: appts,
+        data: appointments,
         pagination: {
           total,
           page: Number(req.query.page || 1),

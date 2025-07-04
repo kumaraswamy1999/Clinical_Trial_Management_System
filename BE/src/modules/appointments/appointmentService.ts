@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
 import { IAppointment } from "../../models/appointmentModel";
 import AppointmentModel from "../../models/appointmentModel";
 
@@ -40,14 +40,53 @@ export const getAppointments = async ({
   skip = 0,
   limit = 10,
 }: QueryOptions) => {
-  const appts = await AppointmentModel.find(filter)
-    .sort(sort)
-    .skip(skip)
-    .limit(limit);
+  const { researcherId, patientId } = filter;
+
+  const matchConditions: any = {};
+
+  if (researcherId) {
+    matchConditions["trialDetails.researcherId"] = new mongoose.Types.ObjectId(
+      researcherId
+    );
+  }
+
+  if (patientId) {
+    matchConditions["patientId"] = new mongoose.Types.ObjectId(patientId);
+  }
+
+  const appointments = await AppointmentModel.aggregate([
+    {
+      $lookup: {
+        from: "trials",
+        localField: "trialId",
+        foreignField: "_id",
+        as: "trialDetails",
+      },
+    },
+    {
+      $unwind: "$trialDetails",
+    },
+    {
+      $match: matchConditions,
+    },
+    {
+      $project: {
+        apptId: 1,
+        apptDate: 1,
+        patientId: 1,
+        trialName: "$trialDetails.trialName",
+        trialId: "$trialDetails._id",
+        description: "$trialDetails.description",
+      },
+    },
+    { $sort: { apptDate: -1 } }, // Optional: sort by appointment date
+    { $skip: skip },
+    { $limit: limit },
+  ]);
 
   const total = await AppointmentModel.countDocuments(filter);
 
-  return { appts, total };
+  return { appointments, total };
 };
 
 // export const getTrialById = async (id: string) => {
