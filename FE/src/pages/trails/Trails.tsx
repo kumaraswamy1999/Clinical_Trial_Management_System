@@ -37,6 +37,7 @@ const Trails: React.FC = () => {
   const [addTrailModal, setAddTrialModal] = useState(false);
   const [isModalOpen, setIsModelOpen] = useState(false);
   const [trailDetails, setTrailDetails] = useState(null);
+  const [trialId, setTrialId] = useState("");
   // const [search, setSearch] = useState("");
   const { data, isLoading, error } = useQuery({
     queryKey: ["trails", filterOption, addTrailModal],
@@ -49,6 +50,15 @@ const Trails: React.FC = () => {
 
   const handleClick = () => {
     setAddTrialModal((prev) => !prev);
+  };
+
+  const handleEnroll = (status, id) => {
+    setIsModelOpen(status);
+    setTrialId(id);
+  };
+
+  const handleClose = () => {
+    setIsModelOpen(false);
   };
 
   const serialNumber = (index) => (page - 1) * limit + index + 1;
@@ -120,7 +130,7 @@ const Trails: React.FC = () => {
                         </button>
                       ) : (
                         <button
-                          onClick={() => setIsModelOpen(true)}
+                          onClick={() => handleEnroll(true, trail._id)}
                           className="text-xs bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600 transition"
                         >
                           Entroll{" "}
@@ -151,13 +161,23 @@ const Trails: React.FC = () => {
       >
         <TrialForm onSuccess={() => handleClick()} initialData={trailDetails} />
       </Modal>
-      <Modal
+      {/* <Modal
         isOpen={isModalOpen}
         title="Enrollment"
         onClose={() => setIsModelOpen(false)}
       >
-        {<Enrollment />}
+        {<Enrollment />} */}
+      <Modal isOpen={isModalOpen} title="Enrollment" onClose={handleClose}>
+        {
+          <Enrollment
+            trialId={trialId}
+            close={() => {
+              handleClose();
+            }}
+          />
+        }
       </Modal>
+      {/* </Modal> */}
     </>
   );
 };

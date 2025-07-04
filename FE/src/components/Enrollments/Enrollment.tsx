@@ -1,7 +1,10 @@
+
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import { useNavigate } from "react-router";
+import { useState } from "react";
+
+
 
 const validationSchema = Yup.object().shape({
   patientId: Yup.string().required("Patient Id is required"),
@@ -22,14 +25,17 @@ interface formValues {
   doc: File | null;
   status: string;
 }
-export default function Enrollment() {
-  const navigate = useNavigate();
+export default function Enrollment({trialId,close}) {
+  const [message,setMessage] = useState('')
+  const [errorMessage,setErrorMessage] = useState('')
+  const patientId = JSON.parse(localStorage.getItem('user'))._id;
   const formik = useFormik<formValues>({
     initialValues: {
-      patientId: "",
-      trialId: "",
+      //patientId: "6866193fae03b944dea9e3a9",
+      patientId:patientId,
+      trialId: trialId,
       doc: null,
-      status: "",
+      status: "enrolled",
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -43,27 +49,36 @@ export default function Enrollment() {
       for (const [key, val] of formData.entries()) {
         console.log(`${key}`, val);
       }
-      const response = await axios.post(
+      try{
+        const response = await axios.post(
         "http://localhost:5000/api/enrollments/createEnrollment",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-
       if(response.status === 201){
-        navigate('/enrollments')
+           setMessage(response.data.message)
+          close();
+      }
+
+      }
+      catch(err){
+        setErrorMessage(err.response.data.message)
+       console.log(err)
       }
       
     },
   });
   return (
     <>
+    {message && <div className="text-green-500">{message}</div>}
+     {errorMessage && <div className="text-red-500">{errorMessage}</div>}
       <form
         onSubmit={formik.handleSubmit}
         className="max-w-md mx-auto p-6 bg-white shadow-md rounded"
       >
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label
             htmlFor="patientId"
             className="block text-sm font-medium text-gray-700"
@@ -99,7 +114,7 @@ export default function Enrollment() {
             type="text"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values.trialId}
+            value={trialId}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
           />
           {formik.touched.trialId && formik.errors.trialId && (
@@ -130,7 +145,7 @@ export default function Enrollment() {
               {formik.errors.status}
             </div>
           )}
-        </div>
+        </div> */}
 
         <div className="mb-4">
           <label

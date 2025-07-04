@@ -4,7 +4,7 @@ import enrollment from "../../models/enrollment";
 
 export const getAllEnrollments = async (req: Request, res: Response) => {
     try {
-        const response = await enrollment.find();
+        const response = await enrollment.find().populate('trialId').populate('patientId');
         res.status(200).send({ message: 'success', payload: response })
     } catch (error) {
         res.status(500).send({ message: 'something went wrong' })

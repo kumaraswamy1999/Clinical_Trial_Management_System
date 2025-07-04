@@ -6,6 +6,7 @@ import Trails from "../pages/trails/Trails";
 import path from "path";
 import PatientEnrollment from "../components/Enrollments/patientsEnrollments";
 import Notifications from "../pages/Notification";
+import ResearcherEnrollments from "../pages/Researcher/ResearcherEnrollment";
 
 const Register = lazy(() => import("../pages/auth/Register"));
 const LoginResearcher = lazy(() => import("../pages/Researcher/LoginResearcher"));
@@ -40,6 +41,7 @@ const routes = [
           { index: true, element: <AdminHomePage /> },
           { path: "trails", element: <Trails /> },
           { path: "enrollments", element: <PatientEnrollment /> },
+          {path:'researcherEnrollments',element:<ResearcherEnrollments/>}
         ],
       },
     ],

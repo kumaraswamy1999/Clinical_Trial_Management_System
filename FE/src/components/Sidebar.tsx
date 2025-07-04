@@ -3,7 +3,9 @@ import { NavLink } from "react-router";
 
 const Sidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const role = JSON.parse(localStorage.getItem("user")).role;
 
+  
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
@@ -18,7 +20,7 @@ const Sidebar: React.FC = () => {
   const sidebarItems: SidebarItem[] = [
     { name: "Dashboard", path: "/dashboard" },
     { name: "Trials", path: "/dashboard/trails" },
-    { name: "Enrollment", path: "/dashboard/enrollments" },
+    { name: "Enrollment", path:role === 'patient' ? `/dashboard/enrollments` : 'researcherEnrollments' },
   ];
 
   return (
