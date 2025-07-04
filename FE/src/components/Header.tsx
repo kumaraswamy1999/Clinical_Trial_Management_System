@@ -16,7 +16,7 @@ export const Header: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
     const handleLogout = () => {
         logout();
-        navigate("/login");
+        navigate("/");
         toast.success("Logout successful");
 
     };
