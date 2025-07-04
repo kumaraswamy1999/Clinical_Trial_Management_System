@@ -7,23 +7,26 @@ import path from "path";
 import PatientEnrollment from "../components/Enrollments/patientsEnrollments";
 import Notifications from "../pages/Notification";
 import ResearcherEnrollments from "../pages/Researcher/ResearcherEnrollment";
+import Appointments from "../pages/appointment/Appointments";
 
 const Register = lazy(() => import("../pages/auth/Register"));
-const LoginResearcher = lazy(() => import("../pages/Researcher/LoginResearcher"));
+const LoginResearcher = lazy(
+  () => import("../pages/Researcher/LoginResearcher")
+);
 const UserDashboard = lazy(() => import("../pages/user/UserDashboard"));
 const UserHomePage = lazy(() => import("../pages/user/UserHomePage"));
 const AdminDashboard = lazy(() => import("../pages/admin/AdminDashboard"));
 const AdminHomePage = lazy(() => import("../pages/admin/AdminHomePage"));
-const EntryScreen = lazy(()=> import("../pages/EntryScreen/EntryScreen"));
-const PatientLogin= lazy(()=>import("../pages/Patient/LoginPatient"));
-const PatientRegister= lazy(()=>import("../pages/Patient/RegisterPatient"));
+const EntryScreen = lazy(() => import("../pages/EntryScreen/EntryScreen"));
+const PatientLogin = lazy(() => import("../pages/Patient/LoginPatient"));
+const PatientRegister = lazy(() => import("../pages/Patient/RegisterPatient"));
 
 const routes = [
-  {path:"/",element:<EntryScreen/>},
-  {path:"/notification",element:<Notifications/>},
+  { path: "/", element: <EntryScreen /> },
+  { path: "/notification", element: <Notifications /> },
   { path: "/login/researcher", element: <LoginResearcher /> },
-    {path:"/login/patient",element:<PatientLogin/>},
-    {path:"/register/patient",element:<PatientRegister/>},
+  { path: "/login/patient", element: <PatientLogin /> },
+  { path: "/register/patient", element: <PatientRegister /> },
 
   // {
   //   // give role
@@ -41,7 +44,8 @@ const routes = [
           { index: true, element: <AdminHomePage /> },
           { path: "trails", element: <Trails /> },
           { path: "enrollments", element: <PatientEnrollment /> },
-          {path:'researcherEnrollments',element:<ResearcherEnrollments/>}
+          { path: "researcherEnrollments", element: <ResearcherEnrollments /> },
+          { path: "appointments", element: <Appointments /> },
         ],
       },
     ],

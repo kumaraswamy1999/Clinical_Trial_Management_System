@@ -5,7 +5,7 @@ const Sidebar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(true);
   const role = JSON.parse(localStorage.getItem("user")).role;
 
-  
+
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
@@ -21,6 +21,7 @@ const Sidebar: React.FC = () => {
     { name: "Dashboard", path: "/dashboard" },
     { name: "Trials", path: "/dashboard/trails" },
     { name: "Enrollment", path:role === 'patient' ? `/dashboard/enrollments` : 'researcherEnrollments' },
+    { name: "Appointment", path: "/dashboard/appointments" },
   ];
 
   return (
