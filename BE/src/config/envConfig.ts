@@ -15,4 +15,5 @@ export const env = {
   BASIC_API_URL: getEnvVar("BASIC_API_URL", "/api"),
   MONGO_URI: getEnvVar("MONGO_URI", "mongodb://localhost:27017/clinical_trial_db"),
   JWT_ACCESS: getEnvVar("JWT_ACCESS_SECRET", "supersecret"),
+  EMAIL_API_KEY: getEnvVar("EMAIL_API_key","")
 };

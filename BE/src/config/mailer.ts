@@ -5,7 +5,7 @@ import { env } from './envConfig';
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-sgMail.setApiKey(process.env.EMAIL_API_KEY)
+sgMail.setApiKey(env.EMAIL_API_KEY)
 
 export const sendEmail = async (
   to: string,
