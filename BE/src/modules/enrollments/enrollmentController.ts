@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
 import enrollment from "../../models/enrollment";
+import { sendEmail } from "../../config/mailer";
+import Patient from "../../models/PatientModel";
+import trialModel from "../../models/trialModel";
 
 
 export const getAllEnrollments = async (req: Request, res: Response) => {
@@ -73,9 +76,25 @@ export const updateEnrollmentById = async(req: Request, res: Response) => {
         const data = await enrollment.findOneAndUpdate({ _id: enrollmentId},updatedData,{
             new:true
         });
+        sendNotificationToPatient(data?.patientId,data?.status,data?.trialId)
         res.send({payload:data})
 
     }catch(error){
         res.status(500).send({message:'some thing went wrong'})
+    }
+}
+
+const sendNotificationToPatient = async (patientId: any, status: any, trailId: any) => {
+    try {
+        const findPatient = await Patient.findById(patientId).select('name email')
+        const findTrailName = await trialModel.findById(trailId).select('trialName')
+        const message = status === 'accepted' ?
+            `Hi ${findPatient?.name} your enrollement for the trail ${findTrailName?.trialName} has been approved please followup for appoinments` :
+            `Hi ${findPatient?.name} your enrollement for the trail ${findTrailName?.trialName} has been rejected contact support team for more info`
+        if (findPatient && findPatient?.email && findPatient?.name && findTrailName) {
+            sendEmail('saisandy97@mailinator.com', `Enrollment ${status}`, message, '')
+        }
+    } catch (error) {
+        console.log(error)
     }
 }

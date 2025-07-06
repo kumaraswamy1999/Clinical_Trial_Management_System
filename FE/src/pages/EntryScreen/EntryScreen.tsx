@@ -1,50 +1,13 @@
-// import React from 'react';
-// import { useNavigate } from 'react-router-dom';
-
-// const EntryScreen: React.FC = () => {
-//   const navigate = useNavigate();
-
-//   return (
-//     <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-blue-100 to-white">
-//       <h1 className="text-4xl font-bold mb-4 text-blue-700">Clinical Trial Management System</h1>
-//       <p className="text-lg text-gray-600 mb-8 text-center max-w-xl">
-//         Manage and track clinical trials efficiently. Patients can enroll and monitor their progress, while researchers can oversee trial data and compliance.
-//       </p>
-
-//       <div className="flex space-x-8">
-//         <div className="bg-white p-6 rounded shadow-md text-center w-64">
-//           <h2 className="text-xl font-semibold mb-4">I'm a Patient</h2>
-//           <button
-//             onClick={() => navigate('/patient')}
-//             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full cursor-pointer"
-//           >
-//             Enter Patient Portal
-//           </button>
-//         </div>
-
-//         <div className="bg-white p-6 rounded shadow-md text-center w-64">
-//           <h2 className="text-xl font-semibold mb-4">I'm a Researcher</h2>
-//           <button
-//             onClick={() => navigate('/researcher')}
-//             className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 w-full cursor-pointer"
-//           >
-//             Enter Researcher Portal
-//           </button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default EntryScreen;
-
-
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const EntryScreen: React.FC = () => {
   const navigate = useNavigate();
   const [showPatientModal, setShowPatientModal] = useState(false);
+
+  useEffect(()=>{
+    localStorage.clear()
+  },[])
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-blue-100 to-white">
