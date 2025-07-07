@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { submitLoginForm } from "../../redux/actions/loginActions";
+import { useAppDispatch } from "../../redux/hooks/hooks";
 
 type LoginFormInputs = {
   email: string;
@@ -12,7 +13,7 @@ type LoginFormInputs = {
 
 const LoginPatient: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const {
     register,

@@ -40,7 +40,7 @@ const EntryScreen: React.FC = () => {
 
       {/* Modal */}
       {showPatientModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 ">
           <div className="bg-white p-6 rounded shadow-lg w-96 text-center">
             <h3 className="text-xl font-bold mb-4">Patient Access</h3>
             <p className="mb-4 text-gray-600">Choose an option to proceed:</p>
